@@ -1,103 +1,50 @@
-library(RWeka)
+require(RWeka)
+require(bnlearn)
+require(rCharts)
+
+setwd("~/Projects/BayesNetsViz/R processing")
+
 
 data(iris)
 
-BNet <- make_Weka_classifier("weka/classifiers/bayes/BayesNet")
-K2="weka.classifiers.bayes.net.search.local.K2"
-wcontrol <- Weka_control(D=TRUE,Q=K2,"--")
-model <- BNet(Species~., data=iris, control=wcontrol)
+iris <- data.frame(iris)
 
-model$classifier
-model$predictions
-model$call
-model$handlers
-model$terms
+#make descrete categories
+iris[,c(1:4)] <- discretize(iris[,c(1:4)], method='interval')
 
-summary(model)
-str(model)
-
-writeLines(rJava::.jstrVal(model$classifier))
-
-WOW("BayesNet")
-
-predict(model, type="probability")
-
-library(bnlearn)
-
-?tree.bayes
-
-data(learning.test)
-
-data(iris)
-
-iris$Sepal.Length <- discretize(iris$Sepal.Length, method='interval', categories = 3)
-iris$Sepal.Width <- discretize(iris$Sepal.Width, method='interval', categories = 3)
-iris$Petal.Width <- discretize(iris$Petal.Width, method='interval', categories = 3)
-iris$Petal.Length <- discretize(iris$Petal.Length, method='interval', categories = 3)
-
-
+#learn network/cpt
 res <- naive.bayes(iris, "Species", c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"))
-
+#create fitted object
 fitted <- bn.fit(res, iris)
 
-names(res[2]$nodes)
-nodes <- data.frame(names=(names(res[2]$nodes)))
-nodes$id <- 1:nrow(nodes)
+#create graph object(learns x, y coords using igraph)
+graphObj <- graphviz.plot(fitted)
 
-links <- as.data.frame(res$arcs)
-colnames(links) <- c('source', 'target')
+#extract x, y coords
+yCoord <- graphObj@renderInfo@nodes$nodeY
+xCoord <- graphObj@renderInfo@nodes$nodeX
 
-links <- merge(links, nodes, by.x='source', by.y='names')
-links <- merge(links, nodes, by.x='target', by.y='names')
-links <- links[,c(3,4)]
-colnames(links) <- c('source', 'target')
-links <- links-1
+#make new list of each object with x, y coords added
+newlist <- list()
+for (i in 1:length(fitted)) {
+  temp <- c(test[[i]], x=as.numeric(xCoord[names(xCoord) == names(test[i])]), y = as.numeric(yCoord[names(yCoord) == names(test[i])]))
+  newlist[[length(newlist)+1]] <- temp
+}
 
-x <- list(nodes=nodes, links=links)
+#convert to json
+jsonOut <- toJSONArray(newlist)
 
-library(jsonlite)
-graph <- toJSON(x)
+####json description:
+##array of objects (nodes) with attributes:
+#node = name
+#parents = list of parents
+#children = list of children
+#prob = CPTs
+#x = x coordinate
+#y = y coordinate
 
-write(graph, "iris.json")
-
-
-
-
-graph <- c(graphJSON, graphJSON2)
-
-
-
-write(graphJSON, "iris.json")
-
-
-
-
-test <- compile(as.grain(fitted))
-
-library(RJSONIO)
-
-file <- toJSON(fitted)
-write(file, "iris.json")
-
-
-bn = naive.bayes(learning.test, "A")
-pred = predict(bn, learning.test)
-table(pred, learning.test[,"A"])
-
-data(learning.test)
-# learn the network structure.
-res = gs(learning.test)
-# set the direction of the only undirected arc, A - B.
-res = set.arc(res, "A", "B")
-# estimate the parameters of the Bayesian network.
-fitted = bn.fit(res, learning.test)
-# replace the parameters of the node B.
-new.cpt = matrix(c(0.1, 0.2, 0.3, 0.2, 0.5, 0.6, 0.7, 0.3, 0.1),
-                 byrow = TRUE, ncol = 3,
-                 dimnames = list(B = c("a", "b", "c"), A = c("a", "b", "c")))
-fitted$B = as.table(new.cpt)
-?gs
+###Now can avoid learning graph structure in D3 (force networks were slow) and can focus
+###on speed and interactivity.  
 
 
 
-tree.bayes(iris, 'Species', c('Sepal.Length'))
