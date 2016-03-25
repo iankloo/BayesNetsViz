@@ -1,1 +1,100 @@
-{"nodes":[{"names":"Species","id":1},{"names":"Sepal.Length","id":2},{"names":"Sepal.Width","id":3},{"names":"Petal.Length","id":4},{"names":"Petal.Width","id":5}],"links":[{"source":0,"target":3},{"source":0,"target":4},{"source":0,"target":1},{"source":0,"target":2}]}
+[
+ {
+ "node": "Species",
+"parents": [ ],
+"children": [ "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" ],
+"prob": [
+0.33333, 0.33333, 0.33333
+],
+"x":    251,
+"y":    409 
+},
+{
+ "node": "Sepal.Length",
+"parents": "Species",
+"children": [ ],
+"prob": [ {
+ "setosa":   0.94,
+"versicolor":   0.22,
+"virginica":   0.02 
+},
+{
+ "setosa":   0.06,
+"versicolor":   0.72,
+"virginica":   0.64 
+},
+{
+ "setosa":      0,
+"versicolor":   0.06,
+"virginica":   0.34 
+} ],
+"x":     50,
+"y":     94 
+},
+{
+ "node": "Sepal.Width",
+"parents": "Species",
+"children": [ ],
+"prob": [ {
+ "setosa":   0.02,
+"versicolor":   0.54,
+"virginica":   0.38 
+},
+{
+ "setosa":   0.72,
+"versicolor":   0.46,
+"virginica":   0.58 
+},
+{
+ "setosa":   0.26,
+"versicolor":      0,
+"virginica":   0.04 
+} ],
+"x":    184,
+"y":     94 
+},
+{
+ "node": "Petal.Length",
+"parents": "Species",
+"children": [ ],
+"prob": [ {
+ "setosa":      1,
+"versicolor":      0,
+"virginica":      0 
+},
+{
+ "setosa":      0,
+"versicolor":   0.96,
+"virginica":   0.12 
+},
+{
+ "setosa":      0,
+"versicolor":   0.04,
+"virginica":   0.88 
+} ],
+"x":    318,
+"y":     94 
+},
+{
+ "node": "Petal.Width",
+"parents": "Species",
+"children": [ ],
+"prob": [ {
+ "setosa":      1,
+"versicolor":      0,
+"virginica":      0 
+},
+{
+ "setosa":      0,
+"versicolor":   0.98,
+"virginica":    0.1 
+},
+{
+ "setosa":      0,
+"versicolor":   0.02,
+"virginica":    0.9 
+} ],
+"x":    452,
+"y":     94 
+} 
+]
