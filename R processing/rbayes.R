@@ -27,12 +27,16 @@ xCoord <- graphObj@renderInfo@nodes$nodeX
 #make new list of each object with x, y coords added
 newlist <- list()
 for (i in 1:length(fitted)) {
-  temp <- c(test[[i]], x=as.numeric(xCoord[names(xCoord) == names(test[i])]), y = as.numeric(yCoord[names(yCoord) == names(test[i])]))
+  temp <- c(fitted[[i]], x=as.numeric(xCoord[names(xCoord) == names(fitted[i])]), y = as.numeric(yCoord[names(yCoord) == names(fitted[i])]))
   newlist[[length(newlist)+1]] <- temp
 }
 
 #convert to json
 jsonOut <- toJSONArray(newlist)
+
+write(jsonOut, 'iris.json')
+
+toJSONArray(links)
 
 ####json description:
 ##array of objects (nodes) with attributes:
@@ -45,6 +49,7 @@ jsonOut <- toJSONArray(newlist)
 
 ###Now can avoid learning graph structure in D3 (force networks were slow) and can focus
 ###on speed and interactivity.  
+
 
 
 
