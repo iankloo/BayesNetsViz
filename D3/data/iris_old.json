@@ -1,5 +1,4 @@
-{
- "nodes": [
+[
  {
  "node": "Species",
 "parents": [ ],
@@ -7,8 +6,8 @@
 "prob": [
 0.33333, 0.33333, 0.33333
 ],
-"x":    252,
-"y":    358 
+"x":    251,
+"y":    409 
 },
 {
  "node": "Sepal.Length",
@@ -30,7 +29,7 @@
 "virginica":   0.34 
 } ],
 "x":     50,
-"y":     83 
+"y":     94 
 },
 {
  "node": "Sepal.Width",
@@ -51,8 +50,8 @@
 "versicolor":      0,
 "virginica":   0.04 
 } ],
-"x":    185,
-"y":     83 
+"x":    184,
+"y":     94 
 },
 {
  "node": "Petal.Length",
@@ -73,8 +72,8 @@
 "versicolor":   0.04,
 "virginica":   0.88 
 } ],
-"x":    319,
-"y":     83 
+"x":    318,
+"y":     94 
 },
 {
  "node": "Petal.Width",
@@ -95,26 +94,7 @@
 "versicolor":   0.02,
 "virginica":    0.9 
 } ],
-"x":    454,
-"y":     83 
+"x":    452,
+"y":     94 
 } 
-],
-"links": [
- {
- "source": [      0 ],
-"target": [      3 ] 
-},
-{
- "source": [      0 ],
-"target": [      4 ] 
-},
-{
- "source": [      0 ],
-"target": [      1 ] 
-},
-{
- "source": [      0 ],
-"target": [      2 ] 
-} 
-] 
-}
+]

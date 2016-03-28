@@ -12,8 +12,26 @@ d3.json("data/iris.json", function(data) {
 
 console.log(data);
 
+  data.links.forEach(function(d) {
+    d.source = data.nodes[d.source];
+    d.target = data.nodes[d.target];
+  });
+
+ var link = svg.append("g")
+      .attr("class", "link")
+    .selectAll("line")
+      .data(data.links)
+    .enter().append("line")
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+ 
+
+
   var node = svg.selectAll(".node")
-      .data(data)
+      .data(data.nodes)
 	 .enter().append("g")
       .attr("class", "node")
       .call(d3.behavior.drag()
@@ -26,8 +44,9 @@ console.log(data);
         }));
 
 
+
 node.append("circle")
-      .attr("r", 50);
+      .attr("r", 30);
 
 node.append("text")
     .attr("text-anchor", "middle")

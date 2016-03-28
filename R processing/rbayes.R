@@ -1,9 +1,9 @@
 require(RWeka)
 require(bnlearn)
 require(rCharts)
+library(RJSONIO)
 
 setwd("~/Projects/BayesNetsViz/R processing")
-
 
 data(iris)
 
@@ -31,12 +31,33 @@ for (i in 1:length(fitted)) {
   newlist[[length(newlist)+1]] <- temp
 }
 
-#convert to json
-jsonOut <- toJSONArray(newlist)
+#create links
+nodes <- data.frame(names=(names(res[2]$nodes)))
+nodes$id <- 1:nrow(nodes)
+
+links <- as.data.frame(res$arcs)
+colnames(links) <- c('source', 'target')
+
+links <- merge(links, nodes, by.x='source', by.y='names')
+links <- merge(links, nodes, by.x='target', by.y='names')
+colnames(links) <- c('source', 'target')
+links <- links-1
+linklist <- setNames(split(links, seq(nrow(links))), rownames(links))
+names(linklist) <- NULL
+
+#make dataframe for margin (base rate probability)
+for(i in )
+
+
+
+
+
+fullList <- list(nodes = newlist, links = linklist)
+
+jsonOut <- toJSON(fullList)
 
 write(jsonOut, 'iris.json')
 
-toJSONArray(links)
 
 ####json description:
 ##array of objects (nodes) with attributes:
