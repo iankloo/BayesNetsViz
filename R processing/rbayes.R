@@ -1,7 +1,8 @@
 require(RWeka)
 require(bnlearn)
 require(rCharts)
-library(RJSONIO)
+require(RJSONIO)
+require(plyr)
 
 setwd("~/Projects/BayesNetsViz/R processing")
 
@@ -13,7 +14,11 @@ iris <- data.frame(iris)
 iris[,c(1:4)] <- discretize(iris[,c(1:4)], method='interval')
 
 #learn network/cpt
-res <- naive.bayes(iris, "Species", c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"))
+responseVar = "Species"
+indVars = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
+data = iris
+
+res <- naive.bayes(data, responseVar, indVars)
 #create fitted object
 fitted <- bn.fit(res, iris)
 
@@ -46,8 +51,14 @@ linklist <- setNames(split(links, seq(nrow(links))), rownames(links))
 names(linklist) <- NULL
 
 #make dataframe for margin (base rate probability)
-for(i in )
-
+marginList <- list()
+for(i in 1:length(indVars)) {
+  temp <- count(data[,indVars[i]])
+  temp$freq <- temp$freq/sum(temp$freq)
+  temp <- list(temp)
+  names(temp) <- indVars[i]
+  marginList[[length(marginList)+1]] <- temp
+}
 
 
 
